@@ -20,6 +20,8 @@ fator_multiplicativo = [1, 2, 1.6, 2, 2, 1.8, 2, 1.6, 2, 1.8, 2, 1.2, 2, 2, 1.8,
 
 
 # resultado_oficial = [2, 0, 0, 0, 0, 2, 0, 1, 0, 3, 1, 4, 0, 1, 1, 0]
+# resultado_oficial = [-1, 0, -1, 0, -1, 0, -1, 0, 0, -1, -1, 0, -1, 0, 0, -1]
+
 resultado_oficial = [-1, 0, -1, 0, -1, 0, -1, 0, 0, -1, -1, 0, -1, 0, 0, -1]
 
 empates_oficial =   ['TR', 'TR', 'TR', 'TR', 'PP', 'TR', 'TR', 'TR', 'PP', 'TR', 'PP', 'TR', 'TR', 'TR', 'PP', 'TR']
@@ -63,6 +65,24 @@ def pontua_erros(lista):
     return soma
 
 
+# def pontua_erros_quartas(lista):
+#     soma = 0
+#     for k in range(len(lista)):
+#         if resultado_oficial[k] == 1:
+#             if resultado_oficial[k] - lista[k] == 1:
+#                 soma += pontuacoes_erros[lista[k]]
+#     return soma
+
+
+# def pontua_erros_semis(lista):
+#     soma = 0
+#     for k in range(len(lista)):
+#         if resultado_oficial[k] == 2:
+#             if resultado_oficial[k] - lista[k] == 1:
+#                 soma += pontuacoes_erros[lista[k]]
+#     return soma
+
+
 def acertos_desempate(lista):
     soma = 0
     for i in range(len(lista)):
@@ -87,6 +107,10 @@ if __name__ == '__main__':
 
         pontuacao_total = 0
         pontuacao_total += pontua_fase(cods_previsoes, 0)
+        # pontuacao_total += pontua_fase(cods_previsoes, 1)
+        # pontuacao_total += pontua_erros_quartas(cods_previsoes)
+        # pontuacao_total += pontua_fase(cods_previsoes, 2)
+        # pontuacao_total += pontua_erros_semis(cods_previsoes)
         # pontuacao_total += pontua_acertos(cods_previsoes)
         # pontuacao_total += pontua_erros(cods_previsoes)
 
@@ -94,4 +118,4 @@ if __name__ == '__main__':
         # print acertos_desempate(prev_empates)
         print pontuacao_total
 
-    pd.DataFrame(pontos_participantes, columns=['Username', 'Pontuação parcial']).to_csv('rankings_parciais/ranking_bolao_8as.csv', index=False)
+    # pd.DataFrame(pontos_participantes, columns=['Username', 'Pontuação parcial']).to_csv('rankings_parciais/ranking_bolao_8as.csv', index=False)
