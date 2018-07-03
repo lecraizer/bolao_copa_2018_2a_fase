@@ -1,4 +1,5 @@
 # -*- coding: utf-8 -*-
+import os
 import csv
 import pandas as pd
 from collections import Counter
@@ -40,6 +41,17 @@ def pontua_acertos(lista):
     return soma
 
 
+def pontua_fase(lista, fase):
+    soma = 0
+    for k in range(len(lista)):
+        delta = 1.
+        if (lista[k] == resultado_oficial[k]) and (lista[k] == fase):
+            if lista[k] >= 2:
+                delta = fator_multiplicativo[k]
+            soma += pontuacoes_acertos[lista[k]]*delta
+    return soma
+
+
 def pontua_erros(lista):
     soma = 0
     for k in range(len(lista)):
@@ -60,18 +72,26 @@ def acertos_desempate(lista):
 
 if __name__ == '__main__':
 
-    df = pd.read_excel('palpites/leo.xls')
-    A = df.as_matrix()
-    previsoes = A[0][1:]
-    cods_previsoes = map(conversao_fases.get, previsoes)
-    prev_empates = A[1][1:]
+    pontos_participantes = []
+    directory = 'palpites/'
+    for filename in os.listdir(directory):
+        print filename
+        df = pd.read_excel(directory + filename)
+        A = df.as_matrix()
+        previsoes = A[0][1:]
+        cods_previsoes = map(conversao_fases.get, previsoes)
+        prev_empates = A[1][1:]
 
-    # checando se previsão é válida
-    assert_previsoes(cods_previsoes)
+        # checando se previsão é válida
+        assert_previsoes(cods_previsoes)
 
-    pontuacao_total = 0
-    pontuacao_total += pontua_acertos(cods_previsoes)
-    pontuacao_total += pontua_erros(cods_previsoes)
+        pontuacao_total = 0
+        pontuacao_total += pontua_fase(cods_previsoes, 0)
+        # pontuacao_total += pontua_acertos(cods_previsoes)
+        # pontuacao_total += pontua_erros(cods_previsoes)
 
-    # print acertos_desempate(prev_empates)
-    # print pontuacao_total
+        pontos_participantes.append([filename.split('.xls')[0], pontuacao_total])
+        # print acertos_desempate(prev_empates)
+        print pontuacao_total
+
+    pd.DataFrame(pontos_participantes, columns=['Username', 'Pontuação parcial']).to_csv('rankings_parciais/ranking_bolao_8as.csv', index=False)
